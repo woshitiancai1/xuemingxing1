@@ -1,0 +1,11 @@
+body,html{
+    margin:0;
+    padding:0;
+    width:90%;
+    height:80%;
+}
+.main{
+    height: 600px;
+    width: 300px;
+    margin:0 auto;
+}
