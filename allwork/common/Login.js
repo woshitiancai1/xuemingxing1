@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
 import {View,Text, StyleSheet, TextInput,TouchableOpacity,AsyncStorage,
-        BackHandler,ToastAndroid,} from 'react-native'
+        BackHandler,ToastAndroid,Dimensions,Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 import {myFetch} from '../utils/index'
+const {width,scale} = Dimensions.get('window');
 export default class Login extends Component{
     constructor(){
         super();
@@ -15,16 +16,16 @@ export default class Login extends Component{
     }
     componentDidMount() {
         if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', this.onBackHandler);
+            BackHandler.addEventListener('hardwareBackPress',this.onBackHandler);
         }
     }
     componentWillUnmount() {
         if (Platform.OS === 'android') {
-            BackHandler.removeEventListener('hardwareBackPress', this.onBackHandler);
+            BackHandler.removeEventListener('hardwareBackPress',this.onBackHandler);
         }
     }
     onBackHandler = ()=>{
-        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+        if(this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
             BackHandler.exitApp()          
             return false;        
         }
@@ -43,19 +44,25 @@ export default class Login extends Component{
         })
     }
     homePage=()=>{
-        this.setState({
-            isLoading:true,
-        })
-        myFetch.post('/login',{
-            username:this.state.username,
-            pwd:this.state.pwd,
-        }).then(res=>{
-            AsyncStorage.setItem('user',JSON.stringify(res.data))
-            .then(()=>{
-                this.setState({isloading:false})
-                Actions.homepage();
+        if(this.state.username == "" || this.state.pwd ==""){
+            Alert.alert("用户名或密码不能为空!");
+        }
+        else{
+            this.setState({
+                isLoading:true,
             })
-        })
+            myFetch.post('/login',{
+                username:this.state.username,
+                pwd:this.state.pwd,
+            }).then(res=>{
+                AsyncStorage.setItem('user',JSON.stringify(res.data))
+                .then(()=>{
+                    this.setState({isloading:false})
+                    Actions.homepage();
+                })
+                console.log(res.data);
+            })
+        }
     }
     zhuce = () =>{
         Actions.zhuce();
@@ -144,6 +151,6 @@ const styles = StyleSheet.create({
     },
     text3:{
         fontSize:20,
-        marginLeft:'75%'
+        marginLeft:'60%'
     }
 });
