@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./timer-button.css">
+    <title>timer button 的测试页面2</title>
+</head>
+<body>
+    禁用时长：<input id='time' type='number' value="6">秒
+    <br>
+    按钮文字：<input id='tit' type='text' value="同意">
+    <br>
+    <input id='add' type='button' value='添加定时器按钮' >
+    <hr>
+    <div id='main'>
+    </div>
+    <script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src='./timer-button.js'></script>
+    <script>
+        $(function () {
+            var tb1 = new TimerButton();
+                tb1.show({
+                    num:8,
+                    title:'发送验证码',
+                    onClick:function(){
+                        alert('短信已发送！');
+                    }
+                });
+            var $btnAdd = $('#add');
+            var $time = $('#time');
+            var $tit = $('#tit');
+            $btnAdd.click(function () {
+                var tb = new TimerButton();
+                tb.show({
+                    num:$time.val(),
+                    title:$tit.val(),
+                    onClick:function(){
+                        alert('就知道你会同意的！');
+                    }
+                });
+            })
+        });
+    </script>
+</body>
+</html>
